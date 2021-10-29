@@ -9,7 +9,6 @@ router.get('/', services.ingredients.getAllIngredients)
     
 router.get('/:id', param('id').isNumeric(), async (req, res) => {
     try{
-        //console.log(req.params)
         const validationResults = validationResult(req)
         if(validationResults.isEmpty()){
             const filteredIngredients = await req.context.models.ingredient.findAll({
