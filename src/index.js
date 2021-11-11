@@ -2,6 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import pino from "pino-http";
+import bodyParser from "body-parser";
 
 import sequelize from "./models";
 import { populateDB } from "./helpers";
@@ -19,6 +20,11 @@ app.use((req, _, next) => {
   };
   next();
 });
+
+app.use(bodyParser.urlencoded({ extended: false}))
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/recipes', routes.recipes)
 app.use('/ingredients', routes.ingredients)

@@ -1,29 +1,20 @@
-import express from "express"
-import {param, validationResult} from "express-validator"
+import express from "express";
+import { param } from "express-validator";
 
-import services from "../services"
+import services from "../services";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', services.ingredients.getAllIngredients) 
-    
-router.get('/:id', param('id').isNumeric(), async (req, res) => {
-    try{
-        const validationResults = validationResult(req)
-        if(validationResults.isEmpty()){
-            const filteredIngredients = await req.context.models.ingredient.findAll({
-                where: {id: req.params.id}
-    })
-    //throw new Error ('some bad stuff happened')
-    res.send(filteredIngredients)
-    } else {
-        res.status(400)
-        res.send('validation Error')
-    }
-    }catch(error) {
-        console.log('error', error)
-        res.sendStatus(500)
-    }
-})
+router.get("/", services.ingredients.getAllIngredients);
 
-export default router
+router.get("/:id", param("id").isNumeric(), services.ingredients.getIngredient);
+
+router.post("/", services.ingredients.addIngredients);
+
+router.delete(
+  "/:id",
+  param("id").isNumeric(),
+  services.ingredients.removeIngredient
+);
+
+export default router;
